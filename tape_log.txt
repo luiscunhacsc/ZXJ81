@@ -1,0 +1,6 @@
+[16:34:07] SETUP: Filename set to 'GRIMMS.P'
+[16:34:07] LOAD: Success. 'GRIMMS.P' (9331 bytes) ready. E_LINE=647C expected_len=9331
+[16:34:07] INJECT: Loaded 'GRIMMS.P' into RAM. PC=0207 SP=7FFC
+[20:10:36] SETUP: Filename set to 'VOO.P'
+[20:10:36] LOAD: Success. 'VOO.P' (14147 bytes) ready. E_LINE=774C expected_len=14147
+[20:10:36] INJECT: Loaded 'VOO.P' into RAM. PC=0207 SP=7FFC

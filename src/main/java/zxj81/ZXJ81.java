@@ -1,6 +1,7 @@
 package zxj81;
 
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -13,13 +14,13 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.KeyAdapter;
@@ -100,14 +101,15 @@ public final class ZXJ81 {
         frame.addKeyListener(adapter);
         screen.addKeyListener(adapter);
         frame.pack();
+        frame.setResizable(false);
         frame.setLocationRelativeTo(null);
-        frame.setMinimumSize(new Dimension(420, 340));
     }
 
     private JMenuBar createMenuBar() {
         JMenuBar bar = new JMenuBar();
         JMenu machineMenu = new JMenu("Machine");
         JMenu tapeMenu = new JMenu("Tapes");
+        JMenu viewMenu = new JMenu("View");
         JMenu helpMenu = new JMenu("Help");
 
         JMenuItem reset = new JMenuItem("Hard reset (F8)");
@@ -126,14 +128,37 @@ public final class ZXJ81 {
         launcher.addActionListener(e -> openTapeLauncher());
         tapeMenu.add(launcher);
 
+        viewMenu.add(createZoomMenu());
+
         JMenuItem help = new JMenuItem("Help (F1)");
         help.addActionListener(e -> showHelp());
         helpMenu.add(help);
 
         bar.add(machineMenu);
         bar.add(tapeMenu);
+        bar.add(viewMenu);
         bar.add(helpMenu);
         return bar;
+    }
+
+    private JMenu createZoomMenu() {
+        JMenu zoomMenu = new JMenu("Zoom");
+        ButtonGroup group = new ButtonGroup();
+        for (int zoom = ZX81Screen.MIN_ZOOM; zoom <= ZX81Screen.MAX_ZOOM; zoom++) {
+            String label = String.format("%dx (%dx%d)", zoom, 256 * zoom, 192 * zoom);
+            JRadioButtonMenuItem item = new JRadioButtonMenuItem(label, zoom == screen.zoom());
+            int selectedZoom = zoom;
+            item.addActionListener(e -> setScreenZoom(selectedZoom));
+            group.add(item);
+            zoomMenu.add(item);
+        }
+        return zoomMenu;
+    }
+
+    private void setScreenZoom(int zoom) {
+        screen.setZoom(zoom);
+        frame.pack();
+        screen.requestFocusInWindow();
     }
 
     private void startEmulation() {
@@ -210,8 +235,7 @@ public final class ZXJ81 {
 
     private void toggleStatusBar() {
         status.setVisible(!status.isVisible());
-        frame.revalidate();
-        frame.repaint();
+        frame.pack();
         screen.requestFocusInWindow();
     }
 
@@ -302,6 +326,7 @@ public final class ZXJ81 {
             F8  Hard reset
             F12 Show/hide the status bar
 
+            View > Zoom selects exact 256x192 multiples.
             The PC keyboard follows the ZX81 matrix. Arrow keys also map to 5/6/7/8.
             LOAD "NAME" and SAVE "NAME" use the tapes/ folder, as in the C example.
             """,

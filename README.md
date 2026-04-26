@@ -52,6 +52,7 @@ java -cp "target/classes;src/main/resources" zxj81.ZXJ81 tapes\FLIGHT.P
 - `F5`: open the tape selector
 - `F8`: reset
 - `F12`: show/hide the status bar
+- `View > Zoom`: choose exact `256x192` multiples from `1x` to `5x`
 - `Backspace`: RUBOUT (`SHIFT+0`)
 - Arrow keys: ZX81 cursors
 - Letters, numbers, space, and enter: normal ZX81 matrix

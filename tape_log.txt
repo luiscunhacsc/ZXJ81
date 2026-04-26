@@ -10,3 +10,6 @@
 [11:05:43] SETUP: Filename set to 'CLCKFREQ.P'
 [11:05:43] LOAD: Success. 'CLCKFREQ.P' (2100 bytes) ready. E_LINE=483C expected_len=2099
 [11:05:43] INJECT: Loaded 'CLCKFREQ.P' into RAM. PC=0207 SP=7FFC
+[11:45:06] SETUP: Filename set to 'ZORLAC.P'
+[11:45:06] LOAD: Success. 'ZORLAC.P' (7214 bytes) ready. E_LINE=5C37 expected_len=7214
+[11:45:06] INJECT: Loaded 'ZORLAC.P' into RAM. PC=0207 SP=7FFC

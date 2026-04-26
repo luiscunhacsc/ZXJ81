@@ -23,6 +23,9 @@ final class ZX81Screen extends JPanel {
     private static final int CHAR_PIXELS = 8;
     private static final int WIDTH = COLS * CHAR_PIXELS;
     private static final int HEIGHT = ROWS * CHAR_PIXELS;
+    static final int DEFAULT_ZOOM = 4;
+    static final int MIN_ZOOM = 1;
+    static final int MAX_ZOOM = 5;
     private static final int PAPER = 0xffffff;
     private static final int INK = 0x000000;
 
@@ -32,16 +35,33 @@ final class ZX81Screen extends JPanel {
     private Image keyboardPhoto;
     private boolean keyboardOverlay;
     private boolean helpOverlay;
+    private int zoom = DEFAULT_ZOOM;
 
     ZX81Screen(ZX81Bus bus, byte[] rom, Path baseDir) {
         this.bus = bus;
         setBackground(Color.WHITE);
         setFocusable(true);
-        setPreferredSize(new Dimension(WIDTH * 4, HEIGHT * 4));
-        setMinimumSize(new Dimension(WIDTH, HEIGHT));
+        setZoom(DEFAULT_ZOOM);
         clearFrame();
         buildCharset(rom);
         loadKeyboardPhoto(baseDir);
+    }
+
+    int zoom() {
+        return zoom;
+    }
+
+    void setZoom(int zoom) {
+        if (zoom < MIN_ZOOM || zoom > MAX_ZOOM) {
+            throw new IllegalArgumentException("Unsupported ZX81 screen zoom: " + zoom);
+        }
+        this.zoom = zoom;
+        Dimension size = new Dimension(WIDTH * zoom, HEIGHT * zoom);
+        setPreferredSize(size);
+        setMinimumSize(size);
+        setMaximumSize(size);
+        revalidate();
+        repaint();
     }
 
     void setKeyboardOverlay(boolean keyboardOverlay) {
@@ -115,28 +135,10 @@ final class ZX81Screen extends JPanel {
     }
 
     private Rectangle scaledScreenBounds() {
-        int availableWidth = getWidth();
-        int availableHeight = getHeight();
-        if (availableWidth <= 0 || availableHeight <= 0) {
-            return new Rectangle(0, 0, WIDTH, HEIGHT);
-        }
-
-        int integerScale = Math.min(availableWidth / WIDTH, availableHeight / HEIGHT);
-        int drawWidth;
-        int drawHeight;
-        if (integerScale > 0) {
-            drawWidth = WIDTH * integerScale;
-            drawHeight = HEIGHT * integerScale;
-        } else if (availableWidth * HEIGHT <= availableHeight * WIDTH) {
-            drawWidth = availableWidth;
-            drawHeight = Math.max(1, drawWidth * HEIGHT / WIDTH);
-        } else {
-            drawHeight = availableHeight;
-            drawWidth = Math.max(1, drawHeight * WIDTH / HEIGHT);
-        }
-
-        int x = (availableWidth - drawWidth) / 2;
-        int y = (availableHeight - drawHeight) / 2;
+        int drawWidth = WIDTH * zoom;
+        int drawHeight = HEIGHT * zoom;
+        int x = (getWidth() - drawWidth) / 2;
+        int y = (getHeight() - drawHeight) / 2;
         return new Rectangle(x, y, drawWidth, drawHeight);
     }
 
@@ -242,6 +244,7 @@ final class ZX81Screen extends JPanel {
             "F8   Hard reset",
             "F12  Status bar",
             "",
+            "View > Zoom uses exact 256x192 multiples.",
             "PC keyboard follows the ZX81 matrix.",
             "Arrow keys map to 5/6/7/8."
         };

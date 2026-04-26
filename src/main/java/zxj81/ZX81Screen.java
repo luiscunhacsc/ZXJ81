@@ -10,6 +10,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -22,6 +23,8 @@ final class ZX81Screen extends JPanel {
     private static final int CHAR_PIXELS = 8;
     private static final int WIDTH = COLS * CHAR_PIXELS;
     private static final int HEIGHT = ROWS * CHAR_PIXELS;
+    private static final int PAPER = 0xffffff;
+    private static final int INK = 0x000000;
 
     private final ZX81Bus bus;
     private final boolean[][] charset = new boolean[64][64];
@@ -32,9 +35,11 @@ final class ZX81Screen extends JPanel {
 
     ZX81Screen(ZX81Bus bus, byte[] rom, Path baseDir) {
         this.bus = bus;
-        setBackground(Color.BLACK);
+        setBackground(Color.WHITE);
         setFocusable(true);
         setPreferredSize(new Dimension(WIDTH * 4, HEIGHT * 4));
+        setMinimumSize(new Dimension(WIDTH, HEIGHT));
+        clearFrame();
         buildCharset(rom);
         loadKeyboardPhoto(baseDir);
     }
@@ -54,8 +59,7 @@ final class ZX81Screen extends JPanel {
     }
 
     void refreshFrame() {
-        int[] pixels = ((java.awt.image.DataBufferInt) frame.getRaster().getDataBuffer()).getData();
-        java.util.Arrays.fill(pixels, 0x000000);
+        clearFrame();
 
         int dfile = bus.readRaw16(ZX81Bus.SYSVAR_D_FILE);
         if (dfile < ZX81Bus.RAM_START || dfile >= ZX81Bus.MEMORY_SIZE) {
@@ -67,7 +71,7 @@ final class ZX81Screen extends JPanel {
             for (int col = 0; col < COLS; col++) {
                 int code = bus.readRaw8(dfile);
                 if (code == 0x76) {
-                    // HALT = end of this line; remaining columns stay black (paper)
+                    // HALT = end of this line; remaining columns stay paper.
                     break;
                 }
                 drawChar(col * CHAR_PIXELS, row * CHAR_PIXELS, code);
@@ -83,23 +87,24 @@ final class ZX81Screen extends JPanel {
         repaint();
     }
 
+    private void clearFrame() {
+        int[] pixels = ((java.awt.image.DataBufferInt) frame.getRaster().getDataBuffer()).getData();
+        java.util.Arrays.fill(pixels, PAPER);
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 
-        int scale = Math.max(1, Math.min(getWidth() / WIDTH, getHeight() / HEIGHT));
-        int drawWidth = WIDTH * scale;
-        int drawHeight = HEIGHT * scale;
-        int x = (getWidth() - drawWidth) / 2;
-        int y = (getHeight() - drawHeight) / 2;
+        Rectangle screenBounds = scaledScreenBounds();
+        int x = screenBounds.x;
+        int y = screenBounds.y;
+        int drawWidth = screenBounds.width;
+        int drawHeight = screenBounds.height;
 
-        g2.translate(x, y);
-        g2.scale(scale, scale);
-        g2.drawImage(frame, 0, 0, null);
-        g2.scale(1.0 / scale, 1.0 / scale);
-        g2.translate(-x, -y);
+        g2.drawImage(frame, x, y, drawWidth, drawHeight, null);
         if (keyboardOverlay) {
             drawKeyboardOverlay(g2, x, y, drawWidth, drawHeight);
         }
@@ -109,13 +114,39 @@ final class ZX81Screen extends JPanel {
         g2.dispose();
     }
 
+    private Rectangle scaledScreenBounds() {
+        int availableWidth = getWidth();
+        int availableHeight = getHeight();
+        if (availableWidth <= 0 || availableHeight <= 0) {
+            return new Rectangle(0, 0, WIDTH, HEIGHT);
+        }
+
+        int integerScale = Math.min(availableWidth / WIDTH, availableHeight / HEIGHT);
+        int drawWidth;
+        int drawHeight;
+        if (integerScale > 0) {
+            drawWidth = WIDTH * integerScale;
+            drawHeight = HEIGHT * integerScale;
+        } else if (availableWidth * HEIGHT <= availableHeight * WIDTH) {
+            drawWidth = availableWidth;
+            drawHeight = Math.max(1, drawWidth * HEIGHT / WIDTH);
+        } else {
+            drawHeight = availableHeight;
+            drawWidth = Math.max(1, drawHeight * WIDTH / HEIGHT);
+        }
+
+        int x = (availableWidth - drawWidth) / 2;
+        int y = (availableHeight - drawHeight) / 2;
+        return new Rectangle(x, y, drawWidth, drawHeight);
+    }
+
     private void drawChar(int x, int y, int code) {
         boolean inverse = (code & 0x80) != 0;
         int glyph = code & 0x3f;
         for (int py = 0; py < CHAR_PIXELS; py++) {
             for (int px = 0; px < CHAR_PIXELS; px++) {
-                boolean ink = charset[glyph][py * CHAR_PIXELS + px] ^ inverse;
-                frame.setRGB(x + px, y + py, ink ? 0xffffff : 0x000000);
+                boolean paper = charset[glyph][py * CHAR_PIXELS + px] ^ inverse;
+                frame.setRGB(x + px, y + py, paper ? PAPER : INK);
             }
         }
     }

@@ -2,7 +2,8 @@ package z80core;
 
 /**
  *
- * @author jsanchez
+ * @author jsanchez (original work); Java port and Z80 core optimization for
+ * ISA regularities: Luís Simões da Cunha, 2026.
  */
 public class MemIoOps {
     private byte[] z80Ram = null;

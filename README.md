@@ -4,6 +4,9 @@ ZXJ81 e uma versao Java completa do emulador ZX81, baseada no exemplo
 `ZXC81-v9-main`, mas usando o novo core Z80 otimizado por regularidades de
 instrucoes.
 
+Attribution: original work by jsanchez; Java port and Z80 core optimization
+for ISA regularities by Luís Simões da Cunha, 2026.
+
 ## O que inclui
 
 - Core Z80 em `src/main/java/z80core`, mais compacto e com descodificacao

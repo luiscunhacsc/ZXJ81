@@ -13,6 +13,7 @@
 //               Author: José Luis Sánchez Villanueva
 //
 // Review, adaptation and optimization:
+//               Java port and Z80 core optimization for ISA regularities by
 //               Luís Simões da Cunha, 2026
 //
 // Description:
@@ -21,10 +22,9 @@
 //
 //               The present core is based on the original code identified
 //               above, subsequently developed and improved by José Luis
-//               Sánchez Villanueva. In 2026, Luís Simões da Cunha carried out
-//               a substantial optimization of the internal organization of the
-//               code, taking advantage of the regularities, patterns and
-//               symmetries present in the Z80 instruction set.
+//               Sánchez Villanueva. Java port and optimization of the Z80 core
+//               for ISA regularities were carried out by Luís Simões da Cunha,
+//               2026.
 //
 //               The main goal of this reorganization was to make instruction
 //               execution and decoding more systematic, compact and easier to

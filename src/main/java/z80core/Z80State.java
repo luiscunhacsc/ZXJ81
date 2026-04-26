@@ -4,7 +4,8 @@ import z80core.Z80.IntMode;
 
 /**
  *
- * @author jsanchez
+ * @author jsanchez (original work); Java port and Z80 core optimization for
+ * ISA regularities: Luís Simões da Cunha, 2026.
  */
 public class Z80State {
     // Acumulador y resto de registros de 8 bits

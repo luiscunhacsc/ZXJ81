@@ -14,10 +14,33 @@ public final class ZX81Machine implements NotifyOps {
     static final int CYCLES_PER_FRAME = CPU_HZ / FRAME_HZ;
     static final int INPUT_SLICES = 4;
 
+    enum SpeedMode {
+        SLOW("SLOW (~0.8 MHz)", CYCLES_PER_FRAME / 4),
+        FAST("FAST (3.25 MHz)", CYCLES_PER_FRAME),
+        TURBO("TURBO (4x)", CYCLES_PER_FRAME * 4);
+
+        private final String label;
+        private final int cyclesPerFrame;
+
+        SpeedMode(String label, int cyclesPerFrame) {
+            this.label = label;
+            this.cyclesPerFrame = cyclesPerFrame;
+        }
+
+        String label() {
+            return label;
+        }
+
+        int cyclesPerFrame() {
+            return cyclesPerFrame;
+        }
+    }
+
     private final ZX81Bus bus = new ZX81Bus();
     private final Z80 cpu = new Z80(bus, this);
     private final ZX81Tape tape;
     private final byte[] rom;
+    private SpeedMode speedMode = SpeedMode.FAST;
     private int autoRunCounter;
 
     ZX81Machine(Path baseDir) throws IOException {
@@ -65,8 +88,16 @@ public final class ZX81Machine implements NotifyOps {
         autoRunCounter = 25;
     }
 
+    SpeedMode speedMode() {
+        return speedMode;
+    }
+
+    void setSpeedMode(SpeedMode speedMode) {
+        this.speedMode = Objects.requireNonNull(speedMode, "speedMode");
+    }
+
     void runFrame() {
-        int frameCycles = bus.isFastMode() ? CYCLES_PER_FRAME / 4 : CYCLES_PER_FRAME;
+        int frameCycles = speedMode.cyclesPerFrame();
         int sliceCycles = frameCycles / INPUT_SLICES;
         int remainder = frameCycles % INPUT_SLICES;
 

@@ -13,3 +13,12 @@
 [11:45:06] SETUP: Filename set to 'ZORLAC.P'
 [11:45:06] LOAD: Success. 'ZORLAC.P' (7214 bytes) ready. E_LINE=5C37 expected_len=7214
 [11:45:06] INJECT: Loaded 'ZORLAC.P' into RAM. PC=0207 SP=7FFC
+[11:55:38] SETUP: Filename set to 'GRAFFITY.P'
+[11:55:38] LOAD: Success. 'GRAFFITY.P' (7201 bytes) ready. E_LINE=5C29 expected_len=7200
+[11:55:38] INJECT: Loaded 'GRAFFITY.P' into RAM. PC=0207 SP=7FFC
+[11:57:05] SETUP: Filename set to 'GRIMMS.P'
+[11:57:06] LOAD: Success. 'GRIMMS.P' (9331 bytes) ready. E_LINE=647C expected_len=9331
+[11:57:06] INJECT: Loaded 'GRIMMS.P' into RAM. PC=0207 SP=7FFC
+[11:57:50] SETUP: Filename set to 'GRIMMS.P'
+[11:57:50] LOAD: Success. 'GRIMMS.P' (9331 bytes) ready. E_LINE=647C expected_len=9331
+[11:57:50] INJECT: Loaded 'GRIMMS.P' into RAM. PC=0207 SP=7FFC

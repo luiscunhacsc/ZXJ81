@@ -244,6 +244,7 @@ final class ZX81Screen extends JPanel {
             "F8   Hard reset",
             "F12  Status bar",
             "",
+            "Machine > Speed selects SLOW/FAST/TURBO.",
             "View > Zoom uses exact 256x192 multiples.",
             "PC keyboard follows the ZX81 matrix.",
             "Arrow keys map to 5/6/7/8."

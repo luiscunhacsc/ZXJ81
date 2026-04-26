@@ -117,6 +117,8 @@ public final class ZXJ81 {
         reset.addActionListener(e -> hardReset());
         machineMenu.add(reset);
 
+        machineMenu.add(createSpeedMenu());
+
         JMenuItem toggleStatus = new JMenuItem("Show/hide status (F12)");
         toggleStatus.addActionListener(e -> toggleStatusBar());
         machineMenu.add(toggleStatus);
@@ -156,9 +158,27 @@ public final class ZXJ81 {
         return zoomMenu;
     }
 
+    private JMenu createSpeedMenu() {
+        JMenu speedMenu = new JMenu("Speed");
+        ButtonGroup group = new ButtonGroup();
+        for (ZX81Machine.SpeedMode speedMode : ZX81Machine.SpeedMode.values()) {
+            JRadioButtonMenuItem item = new JRadioButtonMenuItem(speedMode.label(), speedMode == machine.speedMode());
+            item.addActionListener(e -> setSpeedMode(speedMode));
+            group.add(item);
+            speedMenu.add(item);
+        }
+        return speedMenu;
+    }
+
     private void setScreenZoom(int zoom) {
         screen.setZoom(zoom);
         frame.pack();
+        screen.requestFocusInWindow();
+    }
+
+    private void setSpeedMode(ZX81Machine.SpeedMode speedMode) {
+        machine.setSpeedMode(speedMode);
+        status.setText("Speed: " + speedMode.label());
         screen.requestFocusInWindow();
     }
 
@@ -173,10 +193,11 @@ public final class ZXJ81 {
 
     private void updateStatus() {
         status.setText(String.format(
-            "PC %04X  SP %04X  T %d  Tape: %s",
+            "PC %04X  SP %04X  T %d  Speed: %s  Tape: %s",
             machine.cpu().getRegPC(),
             machine.cpu().getRegSP(),
             machine.bus().getTstates(),
+            machine.speedMode().label(),
             machine.tape().currentFilename().isBlank() ? "-" : machine.tape().currentFilename()));
     }
 
@@ -327,6 +348,7 @@ public final class ZXJ81 {
             F8  Hard reset
             F12 Show/hide the status bar
 
+            Machine > Speed selects SLOW, FAST, or TURBO.
             View > Zoom selects exact 256x192 multiples.
             The PC keyboard follows the ZX81 matrix. Arrow keys also map to 5/6/7/8.
             LOAD "NAME" and SAVE "NAME" use the tapes/ folder, as in the C example.

@@ -44,7 +44,7 @@ public final class ZXJ81 {
         this.keyboard = new ZX81Keyboard(machine.bus());
         this.screen = new ZX81Screen(machine.bus(), machine.rom(), baseDir);
         this.frame = new JFrame("ZXJ81 - Java ZX81");
-        this.status = new JLabel("F1 Ajuda | F4 teclado | F6 tapes | F10 reset | F11 sair | F12 estado");
+        this.status = new JLabel("F1 help | F4 keyboard | F6 tapes | F10 reset | F11 exit | F12 status");
     }
     
     public static void main(String[] args) {
@@ -106,27 +106,27 @@ public final class ZXJ81 {
 
     private JMenuBar createMenuBar() {
         JMenuBar bar = new JMenuBar();
-        JMenu machineMenu = new JMenu("Máquina");
+        JMenu machineMenu = new JMenu("Machine");
         JMenu tapeMenu = new JMenu("Tapes");
-        JMenu helpMenu = new JMenu("Ajuda");
+        JMenu helpMenu = new JMenu("Help");
 
         JMenuItem reset = new JMenuItem("Hard reset (F10)");
         reset.addActionListener(e -> hardReset());
         machineMenu.add(reset);
 
-        JMenuItem toggleStatus = new JMenuItem("Mostrar/esconder estado (F12)");
+        JMenuItem toggleStatus = new JMenuItem("Show/hide status (F12)");
         toggleStatus.addActionListener(e -> toggleStatusBar());
         machineMenu.add(toggleStatus);
 
-        JMenuItem exit = new JMenuItem("Sair (F11)");
+        JMenuItem exit = new JMenuItem("Exit (F11)");
         exit.addActionListener(e -> frame.dispose());
         machineMenu.add(exit);
 
-        JMenuItem launcher = new JMenuItem("Launcher de tapes (F6)");
+        JMenuItem launcher = new JMenuItem("Tape selector (F6)");
         launcher.addActionListener(e -> openTapeLauncher());
         tapeMenu.add(launcher);
 
-        JMenuItem help = new JMenuItem("Ajuda (F1)");
+        JMenuItem help = new JMenuItem("Help (F1)");
         help.addActionListener(e -> showHelp());
         helpMenu.add(help);
 
@@ -221,14 +221,14 @@ public final class ZXJ81 {
 
     private void loadTape(Path tape, boolean autoRun) {
         if (!Files.exists(tape)) {
-            JOptionPane.showMessageDialog(frame, "Tape não encontrada:\n" + tape, "ZXJ81", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(frame, "Tape not found:\n" + tape, "ZXJ81", JOptionPane.WARNING_MESSAGE);
             return;
         }
         boolean ok = machine.loadTape(tape, autoRun);
         if (!ok) {
-            JOptionPane.showMessageDialog(frame, "Não consegui carregar:\n" + tape, "ZXJ81", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(frame, "Could not load:\n" + tape, "ZXJ81", JOptionPane.ERROR_MESSAGE);
         } else {
-            status.setText("Tape carregada: " + tape.getFileName());
+            status.setText("Tape loaded: " + tape.getFileName());
         }
         screen.requestFocusInWindow();
     }
@@ -236,7 +236,7 @@ public final class ZXJ81 {
     private void openTapeLauncher() {
         List<Path> tapes = machine.tape().listTapes();
         if (tapes.isEmpty()) {
-            JOptionPane.showMessageDialog(frame, "Não há ficheiros .P em " + baseDir.resolve("tapes"), "ZXJ81", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(frame, "No .P files found in " + baseDir.resolve("tapes"), "ZXJ81", JOptionPane.INFORMATION_MESSAGE);
             screen.requestFocusInWindow();
             return;
         }
@@ -263,8 +263,8 @@ public final class ZXJ81 {
         list.setSelectedIndex(0);
         list.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 13));
 
-        JButton load = new JButton("Carregar");
-        JButton cancel = new JButton("Cancelar");
+        JButton load = new JButton("Load");
+        JButton cancel = new JButton("Cancel");
         load.addActionListener(event -> {
             Path selected = list.getSelectedValue();
             dialog.dispose();
@@ -300,17 +300,17 @@ public final class ZXJ81 {
             """
             ZXJ81
 
-            F1  Ajuda
-            F4  Mostrar fotografia/guia do teclado enquanto premido
-            F6  Launcher de tapes .P
+            F1  Help
+            F4  Show the keyboard photo/guide while held
+            F6  .P tape selector
             F10 Hard reset
-            F11 Sair
-            F12 Mostrar/esconder barra de estado
+            F11 Exit
+            F12 Show/hide the status bar
 
-            O teclado PC segue a matriz do ZX81. As setas também mapeiam para 5/6/7/8.
-            LOAD "NOME" e SAVE "NOME" usam a pasta tapes/, como no exemplo C.
+            The PC keyboard follows the ZX81 matrix. Arrow keys also map to 5/6/7/8.
+            LOAD "NAME" and SAVE "NAME" use the tapes/ folder, as in the C example.
             """,
-            "Ajuda", JOptionPane.INFORMATION_MESSAGE);
+            "Help", JOptionPane.INFORMATION_MESSAGE);
         screen.requestFocusInWindow();
     }
 }

@@ -236,15 +236,15 @@ final class ZX81Screen extends JPanel {
         g2.setFont(bodyFont);
         FontMetrics bfm = g2.getFontMetrics();
         String[] lines = {
-            "F1   Ajuda (manter premido)",
-            "F4   Teclado (manter premido)",
-            "F6   Launcher de tapes .P",
+            "F1   Help (hold)",
+            "F4   Keyboard (hold)",
+            "F6   .P tape selector",
             "F10  Hard reset",
-            "F11  Sair",
-            "F12  Barra de estado",
+            "F11  Exit",
+            "F12  Status bar",
             "",
-            "Teclado PC segue a matriz ZX81.",
-            "Setas mapeiam para 5/6/7/8."
+            "PC keyboard follows the ZX81 matrix.",
+            "Arrow keys map to 5/6/7/8."
         };
         for (String line : lines) {
             int lx = x + 40;

@@ -1,57 +1,57 @@
 # ZXJ81
 
-ZXJ81 e uma versao Java completa do emulador ZX81, baseada no exemplo
-`ZXC81-v9-main`, mas usando o novo core Z80 otimizado por regularidades de
-instrucoes.
+ZXJ81 is a complete Java version of the ZX81 emulator, based on the
+`ZXC81-v9-main` example, but using the new Z80 core optimized around
+instruction-set regularities.
 
 Attribution: original work by jsanchez; Java port and Z80 core optimization
 for ISA regularities by Luís Simões da Cunha, 2026.
 
-## O que inclui
+## What It Includes
 
-- Core Z80 em `src/main/java/z80core`, mais compacto e com descodificacao
-  regular para grupos como `LD r,r`, ALU, `CB`, `DD/FD` e `DD/FD CB`.
-- Emulacao ZX81 em `src/main/java/zxj81`:
-  - ROM espelhada e mapa ROM/RAM.
-  - Teclado matricial ZX81.
-  - Video 32x24 a partir de `D_FILE`.
-  - Modo FAST/SLOW com NMI.
-  - Hooks de LOAD/SAVE compativeis com os ficheiros `.P`.
-- ROM em `src/main/resources/zx81.rom`.
-- Tapes de exemplo em `tapes`.
-- Imagem de referencia do teclado em `assets`.
+- Z80 core in `src/main/java/z80core`, made more compact with regular decoding
+  for groups such as `LD r,r`, ALU, `CB`, `DD/FD`, and `DD/FD CB`.
+- ZX81 emulation in `src/main/java/zxj81`:
+  - Mirrored ROM and ROM/RAM map.
+  - ZX81 keyboard matrix.
+  - 32x24 video generated from `D_FILE`.
+  - FAST/SLOW mode with NMI.
+  - LOAD/SAVE hooks compatible with `.P` files.
+- ROM in `src/main/resources/zx81.rom`.
+- Example tapes in `tapes`.
+- Keyboard reference image in `assets`.
 
-## Compilar
+## Build
 
 ```powershell
 mvn "-Dmaven.repo.local=c:\Users\luisl\Desktop\JavaZX81\.m2\repository" -q -DskipTests compile
 ```
 
-Smoke test sem abrir a janela:
+Smoke test without opening the window:
 
 ```powershell
 java -cp "target/classes" zxj81.ZX81Smoke
 ```
 
-## Executar
+## Run
 
 ```powershell
 java -cp "target/classes;src/main/resources" zxj81.ZXJ81
 ```
 
-Tambem podes arrancar diretamente com uma tape:
+You can also start directly with a tape:
 
 ```powershell
 java -cp "target/classes;src/main/resources" zxj81.ZXJ81 tapes\FLIGHT.P
 ```
 
-## Teclas principais
+## Main Keys
 
-- `F1`: ajuda rapida
-- `F4`: mostra/esconde a imagem do teclado ZX81
-- `F6`: abre o seletor de tapes
+- `F1`: quick help
+- `F4`: show/hide the ZX81 keyboard image
+- `F6`: open the tape selector
 - `F10`: reset
-- `F11`: sair
+- `F11`: exit
 - `Backspace`: RUBOUT (`SHIFT+0`)
-- Setas: cursores ZX81
-- Letras, numeros, espaco e enter: matriz normal do ZX81
+- Arrow keys: ZX81 cursors
+- Letters, numbers, space, and enter: normal ZX81 matrix

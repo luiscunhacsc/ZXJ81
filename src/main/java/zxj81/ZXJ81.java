@@ -44,7 +44,7 @@ public final class ZXJ81 {
         this.keyboard = new ZX81Keyboard(machine.bus());
         this.screen = new ZX81Screen(machine.bus(), machine.rom(), baseDir);
         this.frame = new JFrame("ZXJ81 - Java ZX81");
-        this.status = new JLabel("F1 Ajuda | F4 teclado | F6 tapes | F10 reset | F11 sair");
+        this.status = new JLabel("F1 Ajuda | F4 teclado | F6 tapes | F10 reset | F11 sair | F12 estado");
     }
     
     public static void main(String[] args) {
@@ -114,6 +114,10 @@ public final class ZXJ81 {
         reset.addActionListener(e -> hardReset());
         machineMenu.add(reset);
 
+        JMenuItem toggleStatus = new JMenuItem("Mostrar/esconder estado (F12)");
+        toggleStatus.addActionListener(e -> toggleStatusBar());
+        machineMenu.add(toggleStatus);
+
         JMenuItem exit = new JMenuItem("Sair (F11)");
         exit.addActionListener(e -> frame.dispose());
         machineMenu.add(exit);
@@ -172,6 +176,10 @@ public final class ZXJ81 {
                 frame.dispose();
                 event.consume();
             }
+            case KeyEvent.VK_F12 -> {
+                toggleStatusBar();
+                event.consume();
+            }
             default -> {
                 if (keyboard.keyPressed(event)) {
                     event.consume();
@@ -201,6 +209,13 @@ public final class ZXJ81 {
         machine.hardReset();
         screen.refreshFrame();
         status.setText("Hard reset");
+        screen.requestFocusInWindow();
+    }
+
+    private void toggleStatusBar() {
+        status.setVisible(!status.isVisible());
+        frame.revalidate();
+        frame.repaint();
         screen.requestFocusInWindow();
     }
 
@@ -290,6 +305,7 @@ public final class ZXJ81 {
             F6  Launcher de tapes .P
             F10 Hard reset
             F11 Sair
+            F12 Mostrar/esconder barra de estado
 
             O teclado PC segue a matriz do ZX81. As setas também mapeiam para 5/6/7/8.
             LOAD "NOME" e SAVE "NOME" usam a pasta tapes/, como no exemplo C.

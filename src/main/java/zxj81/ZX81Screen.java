@@ -210,6 +210,7 @@ final class ZX81Screen extends JPanel {
             "F6   Launcher de tapes .P",
             "F10  Hard reset",
             "F11  Sair",
+            "F12  Barra de estado",
             "",
             "Teclado PC segue a matriz ZX81.",
             "Setas mapeiam para 5/6/7/8."

@@ -48,10 +48,10 @@ java -cp "target/classes;src/main/resources" zxj81.ZXJ81 tapes\FLIGHT.P
 ## Main Keys
 
 - `F1`: quick help
-- `F4`: show/hide the ZX81 keyboard image
-- `F6`: open the tape selector
-- `F10`: reset
-- `F11`: exit
+- `F2`: show/hide the ZX81 keyboard image
+- `F5`: open the tape selector
+- `F8`: reset
+- `F12`: show/hide the status bar
 - `Backspace`: RUBOUT (`SHIFT+0`)
 - Arrow keys: ZX81 cursors
 - Letters, numbers, space, and enter: normal ZX81 matrix

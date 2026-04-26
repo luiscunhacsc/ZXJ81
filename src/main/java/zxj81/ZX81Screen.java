@@ -237,10 +237,9 @@ final class ZX81Screen extends JPanel {
         FontMetrics bfm = g2.getFontMetrics();
         String[] lines = {
             "F1   Help (hold)",
-            "F4   Keyboard (hold)",
-            "F6   .P tape selector",
-            "F10  Hard reset",
-            "F11  Exit",
+            "F2   Keyboard (hold)",
+            "F5   .P tape selector",
+            "F8   Hard reset",
             "F12  Status bar",
             "",
             "PC keyboard follows the ZX81 matrix.",

@@ -44,7 +44,7 @@ public final class ZXJ81 {
         this.keyboard = new ZX81Keyboard(machine.bus());
         this.screen = new ZX81Screen(machine.bus(), machine.rom(), baseDir);
         this.frame = new JFrame("ZXJ81 - Java ZX81");
-        this.status = new JLabel("F1 help | F4 keyboard | F6 tapes | F10 reset | F11 exit | F12 status");
+        this.status = new JLabel("F1 help | F2 keyboard | F5 tapes | F8 reset | F12 status");
     }
     
     public static void main(String[] args) {
@@ -110,7 +110,7 @@ public final class ZXJ81 {
         JMenu tapeMenu = new JMenu("Tapes");
         JMenu helpMenu = new JMenu("Help");
 
-        JMenuItem reset = new JMenuItem("Hard reset (F10)");
+        JMenuItem reset = new JMenuItem("Hard reset (F8)");
         reset.addActionListener(e -> hardReset());
         machineMenu.add(reset);
 
@@ -118,11 +118,11 @@ public final class ZXJ81 {
         toggleStatus.addActionListener(e -> toggleStatusBar());
         machineMenu.add(toggleStatus);
 
-        JMenuItem exit = new JMenuItem("Exit (F11)");
+        JMenuItem exit = new JMenuItem("Exit");
         exit.addActionListener(e -> frame.dispose());
         machineMenu.add(exit);
 
-        JMenuItem launcher = new JMenuItem("Tape selector (F6)");
+        JMenuItem launcher = new JMenuItem("Tape selector (F5)");
         launcher.addActionListener(e -> openTapeLauncher());
         tapeMenu.add(launcher);
 
@@ -160,20 +160,16 @@ public final class ZXJ81 {
                 screen.setHelpOverlay(true);
                 event.consume();
             }
-            case KeyEvent.VK_F4 -> {
+            case KeyEvent.VK_F2 -> {
                 screen.setKeyboardOverlay(true);
                 event.consume();
             }
-            case KeyEvent.VK_F6 -> {
+            case KeyEvent.VK_F5 -> {
                 openTapeLauncher();
                 event.consume();
             }
-            case KeyEvent.VK_F10 -> {
+            case KeyEvent.VK_F8 -> {
                 hardReset();
-                event.consume();
-            }
-            case KeyEvent.VK_F11 -> {
-                frame.dispose();
                 event.consume();
             }
             case KeyEvent.VK_F12 -> {
@@ -194,7 +190,7 @@ public final class ZXJ81 {
             event.consume();
             return;
         }
-        if (event.getKeyCode() == KeyEvent.VK_F4) {
+        if (event.getKeyCode() == KeyEvent.VK_F2) {
             screen.setKeyboardOverlay(false);
             event.consume();
             return;
@@ -301,10 +297,9 @@ public final class ZXJ81 {
             ZXJ81
 
             F1  Help
-            F4  Show the keyboard photo/guide while held
-            F6  .P tape selector
-            F10 Hard reset
-            F11 Exit
+            F2  Show the keyboard photo/guide while held
+            F5  .P tape selector
+            F8  Hard reset
             F12 Show/hide the status bar
 
             The PC keyboard follows the ZX81 matrix. Arrow keys also map to 5/6/7/8.

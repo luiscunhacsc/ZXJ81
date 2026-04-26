@@ -23,7 +23,7 @@ final class ZX81Screen extends JPanel {
     private static final int CHAR_PIXELS = 8;
     private static final int WIDTH = COLS * CHAR_PIXELS;
     private static final int HEIGHT = ROWS * CHAR_PIXELS;
-    static final int DEFAULT_ZOOM = 4;
+    static final int DEFAULT_ZOOM = 2;
     static final int MIN_ZOOM = 1;
     static final int MAX_ZOOM = 5;
     private static final int PAPER = 0xffffff;

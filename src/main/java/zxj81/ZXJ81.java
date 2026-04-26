@@ -85,6 +85,7 @@ public final class ZXJ81 {
         status.setOpaque(true);
         status.setBackground(new Color(22, 24, 27));
         status.setForeground(new Color(239, 233, 220));
+        status.setVisible(false);
         frame.add(status, BorderLayout.SOUTH);
 
         KeyAdapter adapter = new KeyAdapter() {

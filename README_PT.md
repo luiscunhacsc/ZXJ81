@@ -51,7 +51,7 @@ java -cp "target/classes;src/main/resources" zxj81.ZXJ81 tapes\FLIGHT.P
 - `F2`: mostra/esconde a imagem do teclado ZX81
 - `F5`: abre o seletor de tapes
 - `F8`: reset
-- `F12`: mostra/esconde a barra de estado
+- `F12`: mostra/esconde a barra de estado, escondida por defeito
 - `View > Zoom`: escolhe multiplos exatos de `256x192`, de `1x` a `5x`
 - `Backspace`: RUBOUT (`SHIFT+0`)
 - Setas: cursores ZX81

@@ -51,7 +51,7 @@ java -cp "target/classes;src/main/resources" zxj81.ZXJ81 tapes\FLIGHT.P
 - `F2`: show/hide the ZX81 keyboard image
 - `F5`: open the tape selector
 - `F8`: reset
-- `F12`: show/hide the status bar
+- `F12`: show/hide the status bar, hidden by default
 - `View > Zoom`: choose exact `256x192` multiples from `1x` to `5x`
 - `Backspace`: RUBOUT (`SHIFT+0`)
 - Arrow keys: ZX81 cursors

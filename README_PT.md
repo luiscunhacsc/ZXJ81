@@ -48,10 +48,10 @@ java -cp "target/classes;src/main/resources" zxj81.ZXJ81 tapes\FLIGHT.P
 ## Teclas principais
 
 - `F1`: ajuda rapida
-- `F4`: mostra/esconde a imagem do teclado ZX81
-- `F6`: abre o seletor de tapes
-- `F10`: reset
-- `F11`: sair
+- `F2`: mostra/esconde a imagem do teclado ZX81
+- `F5`: abre o seletor de tapes
+- `F8`: reset
+- `F12`: mostra/esconde a barra de estado
 - `Backspace`: RUBOUT (`SHIFT+0`)
 - Setas: cursores ZX81
 - Letras, numeros, espaco e enter: matriz normal do ZX81

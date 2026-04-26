@@ -40,7 +40,7 @@ public final class ZX81Machine implements NotifyOps {
     private final Z80 cpu = new Z80(bus, this);
     private final ZX81Tape tape;
     private final byte[] rom;
-    private SpeedMode speedMode = SpeedMode.FAST;
+    private SpeedMode speedMode = SpeedMode.SLOW;
     private int autoRunCounter;
 
     ZX81Machine(Path baseDir) throws IOException {

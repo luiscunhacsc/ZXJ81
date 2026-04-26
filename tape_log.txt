@@ -22,3 +22,6 @@
 [11:57:50] SETUP: Filename set to 'GRIMMS.P'
 [11:57:50] LOAD: Success. 'GRIMMS.P' (9331 bytes) ready. E_LINE=647C expected_len=9331
 [11:57:50] INJECT: Loaded 'GRIMMS.P' into RAM. PC=0207 SP=7FFC
+[12:05:48] SETUP: Filename set to 'GRAFFITY.P'
+[12:05:48] LOAD: Success. 'GRAFFITY.P' (7201 bytes) ready. E_LINE=5C29 expected_len=7200
+[12:05:48] INJECT: Loaded 'GRAFFITY.P' into RAM. PC=0207 SP=7FFC

@@ -31,6 +31,9 @@ import java.nio.file.Path;
 import java.util.List;
 
 public final class ZXJ81 {
+    private static final long FRAME_NANOS = 1_000_000_000L / ZX81Machine.FRAME_HZ;
+    private static final int MAX_CATCH_UP_FRAMES = 5;
+
     private final Path baseDir;
     private final ZX81Machine machine;
     private final ZX81Keyboard keyboard;
@@ -38,6 +41,7 @@ public final class ZXJ81 {
     private final JFrame frame;
     private final JLabel status;
     private Timer timer;
+    private long nextFrameNanos;
 
     private ZXJ81(Path baseDir) throws IOException {
         this.baseDir = baseDir;
@@ -179,16 +183,33 @@ public final class ZXJ81 {
     private void setSpeedMode(ZX81Machine.SpeedMode speedMode) {
         machine.setSpeedMode(speedMode);
         status.setText("Speed: " + speedMode.label());
+        resetFramePacing();
         screen.requestFocusInWindow();
     }
 
     private void startEmulation() {
-        timer = new Timer(20, event -> {
-            machine.runFrame();
-            screen.refreshFrame();
-            updateStatus();
+        resetFramePacing();
+        timer = new Timer(5, event -> {
+            long now = System.nanoTime();
+            int frames = 0;
+            while (now >= nextFrameNanos && frames < MAX_CATCH_UP_FRAMES) {
+                machine.runFrame();
+                nextFrameNanos += FRAME_NANOS;
+                frames++;
+            }
+            if (frames == MAX_CATCH_UP_FRAMES && now >= nextFrameNanos) {
+                nextFrameNanos = now + FRAME_NANOS;
+            }
+            if (frames > 0) {
+                screen.refreshFrame();
+                updateStatus();
+            }
         });
         timer.start();
+    }
+
+    private void resetFramePacing() {
+        nextFrameNanos = System.nanoTime();
     }
 
     private void updateStatus() {
@@ -250,6 +271,7 @@ public final class ZXJ81 {
     private void hardReset() {
         keyboard.clear();
         machine.hardReset();
+        resetFramePacing();
         screen.refreshFrame();
         status.setText("Hard reset");
         screen.requestFocusInWindow();
@@ -272,6 +294,7 @@ public final class ZXJ81 {
         } else {
             status.setText("Tape loaded: " + tape.getFileName());
         }
+        resetFramePacing();
         screen.requestFocusInWindow();
     }
 
